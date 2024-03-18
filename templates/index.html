@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic URL Redirect Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<input type="text" id="search-input" placeholder="Type here e.g. 'baidu'" autocomplete="off">
+<button id="search-btn">Go</button>
+
+<script>
+    $(document).ready(function() {
+        $('#search-btn').on('click', function() {
+            var inputText = $('#search-input').val().trim();
+            $.ajax({
+                url: '/get_url',
+                type: 'GET',
+                data: { search: inputText },  // Send the search term to the server
+                success: function(response) {
+                    var url = response.url;
+                    if (url) {
+                        window.open(url, '_blank').focus();
+                    } else {
+                        alert("Please enter a valid search term.");
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                    alert("An error occurred. Please try again later.");
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
